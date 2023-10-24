@@ -1,0 +1,873 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "Bank System Documentation API",
+    "version": "1.0.11"
+  },
+  "externalDocs": {
+    "description": "Find out more about Swagger",
+    "url": "http://swagger.io"
+  },
+  "servers": [
+    {
+      "url": "localhost:3000/api/v1"
+    }
+  ],
+  "tags": [
+    {
+      "name": "Auth",
+      "description": "Find all about auth router here"
+    },
+    {
+      "name": "User",
+      "description": "Find all about user router here"
+    },
+    {
+      "name": "Bank Account",
+      "description": "Find all about bank account router here"
+    },
+    {
+      "name": "Transaction",
+      "description": "Find all about transaction router here"
+    }
+  ],
+  "paths": {
+    "auth/register": {
+      "post": {
+        "tags": ["Auth"],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string"
+                  },
+                  "email": {
+                    "type": "string"
+                  },
+                  "password": {
+                    "type": "string"
+                  },
+                  "identity_number": {
+                    "type": "string"
+                  },
+                  "identity_type": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "description": "Register User Successfully"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "name": {
+                          "type": "string"
+                        },
+                        "email": {
+                          "type": "string"
+                        },
+                        "identity_number": {
+                          "type": "string"
+                        },
+                        "identity_type": {
+                          "type": "string"
+                        },
+                        "address": {
+                          "type": "string"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/auth/login": {
+      "post": {
+        "tags": ["Auth"],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "email": {
+                    "type": "string"
+                  },
+                  "password": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "description": "Login Successfully"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "token": {
+                          "type": "string"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/auth/profile": {
+      "get": {
+        "tags": ["Auth"],
+        "parameters": [
+          {
+            "name": "jwt token",
+            "in": "token",
+            "description": "get data profile according id in jwt payload",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "description": "Fetch Data Profile Successfully"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "type": "number"
+                        },
+                        "name": {
+                          "type": "string"
+                        },
+                        "email": {
+                          "type": "string"
+                        },
+                        "profile": {
+                          "type": "object",
+                          "properties": {
+                            "id": {
+                              "type": "number"
+                            },
+                            "identity_type": {
+                              "type": "string"
+                            },
+                            "identity_number": {
+                              "type": "string"
+                            },
+                            "address": {
+                              "type": "string"
+                            },
+                            "user_id": {
+                              "type": "number"
+                            }
+                          }
+                        },
+                        "bank_accounts": {
+                          "type": "object",
+                          "properties": {
+                            "id": {
+                              "type": "number"
+                            },
+                            "bank_name": {
+                              "type": "string"
+                            },
+                            "bank_account_number": {
+                              "type": "number"
+                            },
+                            "balance": {
+                              "type": "number"
+                            },
+                            "user_id": {
+                              "type": "number"
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/auth/change-password": {
+      "parameters": [
+        {
+          "name": "jwt token",
+          "in": "token",
+          "description": "change password according id in jwt payload",
+          "required": true,
+          "schema": {
+            "type": "string"
+          }
+        }
+      ],
+      "put": {
+        "tags": ["Auth"],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "new_password": {
+                    "type": "string"
+                  },
+                  "old_password": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "description": "Change Password Successfully"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/users": {
+      "get": {
+        "tags": ["User"],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "description": "Fetch Data All User Successfully"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "type": "number"
+                        },
+                        "name": {
+                          "type": "string"
+                        },
+                        "email": {
+                          "type": "string"
+                        },
+                        "profile": {
+                          "type": "object",
+                          "properties": {
+                            "identity_type": {
+                              "type": "string"
+                            },
+                            "identity_number": {
+                              "type": "string"
+                            },
+                            "address": {
+                              "type": "string"
+                            }
+                          }
+                        },
+                        "bank_accounts": {
+                          "type": "object",
+                          "properties": {
+                            "bank_name": {
+                              "type": "string"
+                            },
+                            "bank_account_number": {
+                              "type": "number"
+                            },
+                            "balance": {
+                              "type": "number"
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/users/{id}": {
+      "get": {
+        "tags": ["User"],
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "description": "Get data user By Id",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "description": "Fetch Data All User Successfully"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "type": "number"
+                        },
+                        "name": {
+                          "type": "string"
+                        },
+                        "email": {
+                          "type": "string"
+                        },
+                        "profile": {
+                          "type": "object",
+                          "properties": {
+                            "identity_type": {
+                              "type": "string"
+                            },
+                            "identity_number": {
+                              "type": "string"
+                            },
+                            "address": {
+                              "type": "string"
+                            }
+                          }
+                        },
+                        "bank_accounts": {
+                          "type": "object",
+                          "properties": {
+                            "bank_name": {
+                              "type": "string"
+                            },
+                            "bank_account_number": {
+                              "type": "number"
+                            },
+                            "balance": {
+                              "type": "number"
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": ["User"],
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "description": "update data user By Id",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "description": "Update Data User by Id Successfully"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "type": "number"
+                        },
+                        "name": {
+                          "type": "string"
+                        },
+                        "email": {
+                          "type": "string"
+                        },
+                        "profile": {
+                          "type": "object",
+                          "properties": {
+                            "identity_type": {
+                              "type": "string"
+                            },
+                            "identity_number": {
+                              "type": "string"
+                            },
+                            "address": {
+                              "type": "string"
+                            }
+                          }
+                        },
+                        "bank_accounts": {
+                          "type": "object",
+                          "properties": {
+                            "bank_name": {
+                              "type": "string"
+                            },
+                            "bank_account_number": {
+                              "type": "number"
+                            },
+                            "balance": {
+                              "type": "number"
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": ["User"],
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "description": "update data user By Id",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "description": "Update Data User by Id Successfully"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "type": "number"
+                        },
+                        "name": {
+                          "type": "string"
+                        },
+                        "email": {
+                          "type": "string"
+                        },
+                        "profile": {
+                          "type": "object",
+                          "properties": {
+                            "identity_type": {
+                              "type": "string"
+                            },
+                            "identity_number": {
+                              "type": "string"
+                            },
+                            "address": {
+                              "type": "string"
+                            }
+                          }
+                        },
+                        "bank_accounts": {
+                          "type": "object",
+                          "properties": {
+                            "bank_name": {
+                              "type": "string"
+                            },
+                            "bank_account_number": {
+                              "type": "number"
+                            },
+                            "balance": {
+                              "type": "number"
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/accounts": {
+      "post": {
+        "tags": ["Bank Account"],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "bank_name": {
+                    "type": "string"
+                  },
+                  "bank_account_number": {
+                    "type": "number"
+                  },
+                  "balance": {
+                    "type": "number"
+                  },
+                  "user_id": {
+                    "type": "number"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "description": "Create Bank Account Successfully"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "bank_name": {
+                          "type": "string"
+                        },
+                        "bank_account_number": {
+                          "type": "number"
+                        },
+                        "balance": {
+                          "type": "number"
+                        },
+                        "user_id": {
+                          "type": "number"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "tags": ["Bank Account"],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "description": "Fetch Data All Bank Account Successfully"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "bank_account_id": {
+                          "type": "number"
+                        },
+                        "bank_name": {
+                          "type": "string"
+                        },
+                        "bank_account_number": {
+                          "type": "number"
+                        },
+                        "balance": {
+                          "type": "number"
+                        },
+                        "user_id": {
+                          "type": "number"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/accounts/{accountId}": {
+      "get": {
+        "tags": ["Bank Account"],
+        "parameters": [
+          {
+            "name": "accountsId",
+            "in": "path",
+            "description": "Get data Bank Account By Id",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "description": "Fetch Data Bank Account by Id Successfully"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "bank_name": {
+                          "type": "string"
+                        },
+                        "bank_account_number": {
+                          "type": "number"
+                        },
+                        "balance": {
+                          "type": "number"
+                        },
+                        "user_id": {
+                          "type": "number"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "transactions": {
+      "post": {
+        "tags": ["Transaction"],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "source_account_id": {
+                    "type": "number"
+                  },
+                  "destination_account_id": {
+                    "type": "number"
+                  },
+                  "amount": {
+                    "type": "number"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "description": "Transaction Successfully"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "source_account_id": {
+                          "type": "number"
+                        },
+                        "destination_account_id": {
+                          "type": "number"
+                        },
+                        "amount": {
+                          "type": "number"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "tags": ["Transaction"],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "description": "Fetch Data All Transaction Successfully"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "transaction_id": {
+                          "type": "number"
+                        },
+                        "source_account_id": {
+                          "type": "number"
+                        },
+                        "destination_account_id": {
+                          "type": "number"
+                        },
+                        "amount": {
+                          "type": "number"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/transactions/{transactionsId}": {
+      "get": {
+        "tags": ["Transaction"],
+        "parameters": [
+          {
+            "name": "transactionsId",
+            "in": "path",
+            "description": "Get data transaction By Id",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "description": "Fetch Data Transaction by Id Successfully"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "transaction_id": {
+                          "type": "number"
+                        },
+                        "source_account_id": {
+                          "type": "number"
+                        },
+                        "destination_account_id": {
+                          "type": "number"
+                        },
+                        "amount": {
+                          "type": "number"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
